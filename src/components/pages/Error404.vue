@@ -2,7 +2,7 @@
   <div class="error-page">
 
       <!--<img src="../../assets/img/icon/404.png" class="error-tag">-->
-      <h1>权限不足！请联系管理员！！</h1>
+      <h1>404 ！ 您访问的页面不存在！！</h1>
 
   </div>
 </template>

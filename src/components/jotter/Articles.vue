@@ -1,18 +1,19 @@
 <template>
 
   <div >
-    <el-row>
-      <el-col :xs="2" :sm="3" :md="4" :lg="4"> <span style="color: white">&nbsp</span></el-col>
-      <el-col :span="12" v-for="(o, index) in 1" :key="o" >
-        <div class="articles-area" >
-          <el-card style="text-align: left" shadow="never">
-            <div v-for="article in articles" :key="article.id">
+
+    <el-row style="width: 1200px;margin: 0 auto; ">
+      <el-col style="width: 900px"><!--:span="12"  :offset="4"-->
+      <div class="articles-area" >
+
+          <div v-for="article in articles" :key="article.id">
+            <el-card  shadow="never">
               <div style="float:left;width:100%;height: 200px">
                 <router-link class="article-link" :to="{path:'jotter/article',query:{id: article.id}}">
-                  <span style="font-size: 20px">
-                    <strong>{{article.articleTitle}}
-                    </strong>
-                  </span>
+                    <span style="font-size: 20px">
+                      <strong>{{article.articleTitle}}
+                      </strong>
+                    </span>
                 </router-link><br>
                 <i class="el-icon-date post-meta"> {{article.articleDate}}</i><br>
                 <router-link class="article-link " :to="{path:'jotter/article',query:{id: article.id}}">
@@ -25,25 +26,31 @@
                   </el-button>
                 </router-link>
               </div>
-            </div>
-          </el-card>
-        </div>
-      </el-col>
+            </el-card>
+          </div>
 
-      <el-col :span="4"  >
+      </div>
+    </el-col>
+
+      <el-col  style="width: 280px"><!--:span="4"-->
       <article-right></article-right>
 
       </el-col>
 
     </el-row>
 
-    <el-pagination
-      background
-      layout="total, prev, pager, next, jumper"
-      @current-change="handleCurrentChange"
-      :page-size="pageSize"
-      :total="total">
-    </el-pagination>
+      <el-pagination
+        style="margin-top: 20px;margin-right: 100px"
+        background
+        layout=" prev, pager, next"
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage"
+        :page-size="pageSize"
+        :total="total"
+        >
+      </el-pagination>
+
+
 
   </div>
 
@@ -60,18 +67,24 @@
     data () {
       return {
         articles: [],
-        pageSize: 4,
+        pageSize: 7,
         total: 0,
-        keywords:''
+        keywords:'',
+        currentPage: 1
       }
+    },
+    created(){
+      this.currentPage=window.sessionStorage.getItem('page') == null ? 1 : JSON.parse(window.sessionStorage.getItem('page' || '[]'))
+
     },
     mounted () {
       this.loadArticles()
     },
     methods: {
       loadArticles () {
-        var _this = this
-        this.$axios.get('/article/' + this.pageSize + '/1').then(resp => {
+        var _this = this;
+        let page=parseInt(this.currentPage)
+        this.$axios.get('/article/' + this.pageSize + '/'+page).then(resp => {
           if (resp && resp.status === 200) {
             _this.articles = resp.data.items
             _this.total = resp.data.total
@@ -80,6 +93,9 @@
       },
       handleCurrentChange (page) {
         var _this = this
+        //document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+        window.sessionStorage.setItem("page",page)
         this.$axios.get('/article/' + this.pageSize + '/' + page).then(resp => {
           if (resp && resp.status === 200) {
             _this.articles = resp.data.items
@@ -90,17 +106,14 @@
       getContent(articleContentMd){
         return articleContentMd.replace(/<\/?.+?>/g, "").replace(/ /g, "");
       },
-
     }
   }
 </script>
 
 <style scoped>
   .articles-area {
-    /*width: 850px;
-    height: 750px;*/
     width: auto;
-    height: 750px;
+    height: auto;
     margin-left: auto;
     margin-right: auto;
   }
@@ -140,36 +153,16 @@
     color: #409EFF;
   }
 
-  .time {
-    font-size: 13px;
-    color: #999;
+
+  .el-pagination.is-background .el-pager li:not(.disabled).active {
+    background-color: #bfbfbf;   // 进行修改背景和字体
+  color: #fff;
   }
-
-  .bottom {
-    margin-top: 13px;
-    line-height: 12px;
+  .el-card{
+    text-align: left;
+    margin-bottom: 20px;
+    background-color: rgba(255,255,255,.8)
   }
-
-
-  .image {
-    width: 50%;
-    display: block;
-  }
-
-  .clearfix:before,
-  .clearfix:after {
-    display: table;
-    content: "";
-  }
-
-  .clearfix:after {
-    clear: both
-  }
-
-
-
-
-
-
 </style>
+
 

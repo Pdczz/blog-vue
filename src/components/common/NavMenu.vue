@@ -1,22 +1,18 @@
 <template>
   <div>
-    <el-menu
+    <!--<el-menu
       :default-active="currentPath"
       router
       mode="horizontal"
-      style="min-width: 1300px">
+      style="min-width: 1300px;position: absolute;margin: 0">
       <el-menu-item v-for="(item,i) in navList" :key="i" :index="item.name">
         {{ item.navItem }}
       </el-menu-item>
-     <!-- <span style="position: absolute;padding-top: 20px;right: 43%;font-size: 20px;font-weight: bold">White Jotter - Your Mind Palace</span>-->
+    </el-menu>-->
 
-      <el-col :span="1" :offset="14" style="margin-top: 15px">
-        <el-button icon="el-icon-upload" type="primary" size="mini" @click="login()">登录</el-button>
-      </el-col>
-      <el-button icon="el-icon-edit" size="mini" style="margin-top: 15px" @click="register()">注册</el-button>
-     <!-- <a href="/register" style="color: #fff;float: right;padding: 20px; margin-right: 15px;background-color: #8c939d" >注册</a>
-      <a href="/login" style="color: #fff;float: right;padding: 20px; margin-right: 10px;background-color: #8c939d">登录</a>-->
-    </el-menu>
+
+
+
   </div>
 </template>
 
@@ -29,7 +25,8 @@
           {name: '/index', navItem: '首页'},
           {name: '/jotter', navItem: '笔记本'},
           {name: '/library', navItem: '图书馆'},
-          {name: '/music', navItem: '音乐馆'}
+          {name: '/history', navItem: '历史'},
+          {name:'/about', navItem: '关于'}
         ],
         keywords: ''
       }
@@ -68,5 +65,9 @@
   .el-menu{
     padding-left: 300px;
   }
+
+
+
+
 
 </style>

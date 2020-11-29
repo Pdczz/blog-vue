@@ -1,10 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '../components/Home'
-import LibraryIndex from '../components/library/LibraryIndex'
-import Login from '../components/Login'
-import foot from '../components/common/foot'
+
+
 Vue.use(Router)
+
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 export default new Router({
   mode: 'history',
@@ -51,9 +55,14 @@ export default new Router({
           component: () => import('../components/library/LibraryIndex')
         },
         {
-          path: '/music',
-          name: 'Mucis',
-          component: () => import('../components/music/Music')
+          path: '/history',
+          name: 'History',
+          component: () => import('../components/history/History')
+        },
+        {
+          path: '/about',
+          name: 'About',
+          component: () =>import('../components/about/About')
         }
       ]
     },
@@ -89,7 +98,13 @@ export default new Router({
       path: '*',
       component: () => import('../components/pages/Error404')
     }
-  ]
+  ],
+  scrollBehavior(to, from,savedPosition) {
+    return {
+      x: 0,
+      y: 0
+    }
+  }
 })
 
 // 用于创建默认路由
@@ -171,5 +186,11 @@ export const createRouter = routes => new Router({
       path: '*',
       component: () => import('../components/pages/Error404')
     }
-  ]
+  ],
+  scrollBehavior(to, from,savedPosition) {
+    return {
+      x: 0,
+      y: 0
+    }
+  }
 })

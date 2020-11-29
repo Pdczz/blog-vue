@@ -1,32 +1,37 @@
 <template>
   <div>
     <el-row style="height: 840px;">
-      <search-bar @onSearch="searchResult" ref="searchBar"></search-bar>
-      <el-tooltip effect="dark" placement="right"
-                  v-for="item in books.slice((currentPage-1)*pagesize,currentPage*pagesize)"
-                  :key="item.id">
-        <p slot="content" style="font-size: 14px;margin-bottom: 6px;">{{item.title}}</p>
-        <p slot="content" style="font-size: 13px;margin-bottom: 6px">
-          <span>{{item.author}}</span> /
-          <span>{{item.date}}</span> /
-          <span>{{item.press}}</span>
-        </p>
-        <p slot="content" style="width: 300px" class="abstract">{{item.abs}}</p>
-        <el-card style="width: 135px;margin-bottom: 20px;height: 233px;float: left;margin-right: 15px" class="book"
-                 bodyStyle="padding:10px" shadow="hover">
-          <div class="cover"><!-- @click="editBook(item)"-->
-            <img :src="item.cover" alt="封面">
-          </div>
-          <div class="info">
-            <div class="title">
-              <a href="">{{item.title}}</a>
+      <el-col>
+        <search-bar @onSearch="searchResult" ref="searchBar"></search-bar>
+      </el-col>
+      <el-col>
+        <el-tooltip effect="dark" placement="right"
+                    v-for="item in books.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+                    :key="item.id">
+          <p slot="content" style="font-size: 14px;margin-bottom: 6px;">{{item.title}}</p>
+          <p slot="content" style="font-size: 13px;margin-bottom: 6px">
+            <span>{{item.author}}</span> /
+            <span>{{item.date}}</span> /
+            <span>{{item.press}}</span>
+          </p>
+          <p slot="content" style="width: 300px" class="abstract">{{item.abs}}</p>
+          <el-card style="width: 135px;margin-bottom: 20px;height: 233px;float: left;margin-right: 15px" class="book"
+                   bodyStyle="padding:10px" shadow="hover">
+            <div class="cover"><!-- @click="editBook(item)"-->
+              <img :src="item.cover" alt="封面">
             </div>
-            <!--<i class="el-icon-delete" @click="deleteBook(item.id)"></i>-->
-          </div>
-          <div class="author">{{item.author}}</div>
-        </el-card>
-      </el-tooltip>
-      <edit-form @onSubmit="loadBooks()" ref="edit"></edit-form>
+            <div class="info">
+              <div class="title">
+                <a href="">{{item.title}}</a>
+              </div>
+              <!--<i class="el-icon-delete" @click="deleteBook(item.id)"></i>-->
+            </div>
+            <div class="author">{{item.author}}</div>
+          </el-card>
+        </el-tooltip>
+      </el-col>
+
+
     </el-row>
     <el-row>
       <el-pagination
@@ -40,11 +45,11 @@
 </template>
 
 <script>
-  import EditForm from './EditForm'
+
   import SearchBar from './SearchBar'
   export default {
     name: 'Books',
-    components: {EditForm, SearchBar},
+    components: {SearchBar},
     data () {
       return {
         books: [],
@@ -65,8 +70,8 @@
         })
       },
       handleCurrentChange: function (currentPage) {
+        document.documentElement.scrollTop = 0;
         this.currentPage = currentPage
-        console.log(this.currentPage)
       },
       searchResult () {
         var _this = this
@@ -77,42 +82,8 @@
             _this.books = resp.data
           }
         })
-      },
-      deleteBook (id) {
-        this.$confirm('此操作将永久删除该书籍, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-            this.$axios
-              .post('/delete/'+id, {}).then(resp => {
-              if (resp && resp.status === 200) {
-                this.loadBooks()
-              }
-            })
-          }
-        ).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
-        })
-        // alert(id)
-      },
-      editBook (item) {
-        this.$refs.edit.dialogFormVisible = true
-        this.$refs.edit.form = {
-          id: item.id,
-          cover: item.cover,
-          title: item.title,
-          author: item.author,
-          date: item.date,
-          press: item.press,
-          abs: item.abs,
-          cid: item.cid,
-          cname: item.cname
-        }
       }
+
     }
   }
 </script>

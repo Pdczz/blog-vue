@@ -57,7 +57,7 @@
     position: absolute;
     margin-left: 50%;
     left: -600px;
-    top: 100px;
+    top: 220px;
     width: 150px;
   }
 </style>
