@@ -3,18 +3,19 @@
     <el-card shadow="never" style="margin-left: 10px">
       <div class="titleforColor">&nbsp文章推荐</div>
 
-      <router-link :to="{path:'jotter/article',query:{id: 26}}">
+      <a href="/jotter/article?id=26">
         <div class="recommend">1.SpringBoot原理解析</div>
-      </router-link>
-      <router-link :to="{path:'jotter/article',query:{id: 23}}">
+      </a>
+      <a href="/jotter/article?id=23">
         <div class="recommend">2.Java核心技术-并发(1)</div>
-      </router-link>
-      <router-link :to="{path:'jotter/article',query:{id: 25}}">
+      </a>
+      <a href="/jotter/article?id=25">
         <div class="recommend">3.Java核心技术-并发(2)</div>
-      </router-link>
-      <router-link :to="{path:'jotter/article',query:{id: 14}}">
+      </a>
+      <a href="/jotter/article?id=14">
         <div class="recommend">4.SpringMVC原理</div>
-      </router-link>
+      </a>
+
     </el-card>
     <el-card shadow="never" style="margin-left: 10px" >
 
